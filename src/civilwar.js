@@ -90,7 +90,7 @@ function bubbleChart() {
   // @v4 scales now have a flattened naming scheme
   var fillColor = d3.scaleOrdinal()
     //.domain(['low', 'medium', 'high'])
-    .domain(['Rouge One', 'Civil War'])
+    .domain(['male', 'female'])
     //.range(['#d84b2a', '#beccae', '#7aa25c']);
     .range(['#d84b2a', '#beccae']);
 
@@ -141,13 +141,13 @@ function bubbleChart() {
 
     var myNodes = rawData.map(function (d) {
       return {
-        id: d.movie,
+        id: d.id,
         radius: radiusScale(+d.radius), //d.total_amount
-        value: +d.percentage_female_line, //total_amount
-        name: d.movie, //grnat_title
-        //org: d.organization,
-        //gender: d.Gender, //group: d.group
-        //speakingturns: d.speaking_turns, //year: d. start_year
+        value: +d.Total_Words, //total_amount
+        name: d.Character, //grnat_title
+        org: d.organization,
+        gender: d.Gender, //group: d.group
+        peakingturns: d.speaking_turns, //year: d. start_year
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -195,10 +195,8 @@ function bubbleChart() {
     var bubblesE = bubbles.enter().append('circle')
       .classed('bubble', true)
       .attr('r', 0)
-      .attr('fill', function (d) { return fillColor(d.name); }) //lowercase?
-      //.attr('fill', function (d) { return fillColor(d.gender); }) //lowercase?
-      .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); }) //lowercase?
-      //.attr('stroke', function (d) { return d3.rgb(fillColor(d.gender)).darker(); }) //lowercase?
+      .attr('fill', function (d) { return fillColor(d.gender); }) //lowercase?
+      .attr('stroke', function (d) { return d3.rgb(fillColor(d.gender)).darker(); }) //lowercase?
       .attr('stroke-width', 2)
       .on('mouseover', showDetail)
       .on('mouseout', hideDetail);
@@ -346,7 +344,7 @@ function bubbleChart() {
     // change outline to indicate hover state.
     d3.select(this).attr('stroke', 'black');
 
-    /*
+
 
     var content = '<span class="name">Name: </span><span class="value">' +
                   d.name +
@@ -361,7 +359,7 @@ function bubbleChart() {
                   d.gender +
                   '</span>';
 
-                  */
+
     var content = '<span class="name"> Name: </span><span class="value">' +
                   d.name +
                   '</span><br/>';
@@ -462,7 +460,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/AllMoviesSummary.csv', display);
+d3.csv('data/CivilWar.csv', display);
 
 // setup the buttons.
 setupButtons();
