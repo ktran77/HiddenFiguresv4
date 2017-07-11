@@ -3,7 +3,7 @@ a, a:visited, a:active {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
 }
 
@@ -36,6 +36,7 @@ a, a:visited, a:active {
 
 .year {
   font-size: 21px;
+  font-weight: bold;
   fill: #aaa;
   cursor: default;
 }

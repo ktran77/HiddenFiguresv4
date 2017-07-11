@@ -8,7 +8,7 @@
  */
 function bubbleChart() {
   // Constants for sizing
-  var width = 940;
+  var width = 1000;
   var height = 600;
 
   // tooltip for mouseover functionality
@@ -19,20 +19,28 @@ function bubbleChart() {
   var center = { x: width / 2, y: height / 2 };
 
   var yearCenters = {
-    2008: { x: width / 3, y: height / 2 },
-    2009: { x: width / 2, y: height / 2 },
-    2010: { x: 2 * width / 3, y: height / 2 }
+    // 2008: { x: width / 3, y: height / 2 },
+    // 2009: { x: width / 2, y: height / 2 },
+    // 2010: { x: 2 * width / 3, y: height / 2 }
+    'male': { x: width/3, y: height / 2 },
+    'female': { x: 2*width / 3, y: height / 2 }
+    // 1: {x: width / 3, y: height / 2},
+    // 8: {x: width / 2, y: height / 2}
   };
 
   // X locations of the year titles.
   var yearsTitleX = {
-    2008: 160,
-    2009: width / 2,
-    2010: width - 160
+    // 2008: 160,
+    // 2009: width / 2,
+    // 2010: width - 160
+    'male': width/3,
+    'female': 2*width/3
+    // 1: 160,
+    // 8: width / 2
   };
 
   // @v4 strength to apply to the position forces
-  var forceStrength = 0.03;
+  var forceStrength = 0.02; //0.03
 
   // These will be set in create_nodes and create_vis
   var svg = null;
@@ -74,9 +82,10 @@ function bubbleChart() {
   // Nice looking colors - no reason to buck the trend
   // @v4 scales now have a flattened naming scheme
   var fillColor = d3.scaleOrdinal()
-    .domain(['low', 'medium', 'high'])
-    .range(['#d84b2a', '#beccae', '#7aa25c']);
-
+    //.domain(['low', 'medium', 'high'])
+    .domain(['male', 'female'])
+    //.range(['#d84b2a', '#beccae', '#7aa25c']);
+    .range(['#d84b2a', '#beccae']);
 
   /*
    * This data manipulation function takes the raw data from
@@ -93,13 +102,13 @@ function bubbleChart() {
   function createNodes(rawData) {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
-    var maxAmount = d3.max(rawData, function (d) { return +d.total_amount; });
+    var maxAmount = d3.max(rawData, function (d) { return +d.radius; });
 
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scalePow()
-      .exponent(0.5)
-      .range([2, 85])
+      .exponent(0.7) //0.5
+      .range([0.1, 80])
       .domain([0, maxAmount]);
 
     // Use map() to convert raw data into node data.
@@ -108,12 +117,12 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.id,
-        radius: radiusScale(+d.total_amount),
-        value: +d.total_amount,
-        name: d.grant_title,
-        org: d.organization,
-        group: d.group,
-        year: d.start_year,
+        radius: radiusScale(+d.radius), //d.total_amount
+        value: +d.Total_Words, //total_amount
+        name: d.Character, //grnat_title
+        //org: d.organization,
+        gender: d.Gender, //group: d.group
+        speakingturns: d.speaking_turns, //year: d. start_year
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -161,8 +170,8 @@ function bubbleChart() {
     var bubblesE = bubbles.enter().append('circle')
       .classed('bubble', true)
       .attr('r', 0)
-      .attr('fill', function (d) { return fillColor(d.group); })
-      .attr('stroke', function (d) { return d3.rgb(fillColor(d.group)).darker(); })
+      .attr('fill', function (d) { return fillColor(d.gender); }) //lowercase?
+      .attr('stroke', function (d) { return d3.rgb(fillColor(d.gender)).darker(); }) //lowercase?
       .attr('stroke-width', 2)
       .on('mouseover', showDetail)
       .on('mouseout', hideDetail);
@@ -202,7 +211,7 @@ function bubbleChart() {
    * x force.
    */
   function nodeYearPos(d) {
-    return yearCenters[d.year].x;
+    return yearCenters[d.gender].x; //lowercase? riginally d.gender
   }
 
 
@@ -243,7 +252,7 @@ function bubbleChart() {
    * Hides Year title displays.
    */
   function hideYearTitles() {
-    svg.selectAll('.year').remove();
+    svg.selectAll('.gender').remove(); //.gender
   }
 
   /*
@@ -253,11 +262,11 @@ function bubbleChart() {
     // Another way to do this would be to create
     // the year texts once and then just hide them.
     var yearsData = d3.keys(yearsTitleX);
-    var years = svg.selectAll('.year')
+    var years = svg.selectAll('.gender') //.gender
       .data(yearsData);
 
     years.enter().append('text')
-      .attr('class', 'year')
+      .attr('class', 'gender')
       .attr('x', function (d) { return yearsTitleX[d]; })
       .attr('y', 40)
       .attr('text-anchor', 'middle')
@@ -273,14 +282,17 @@ function bubbleChart() {
     // change outline to indicate hover state.
     d3.select(this).attr('stroke', 'black');
 
-    var content = '<span class="name">Title: </span><span class="value">' +
+    var content = '<span class="name">Name: </span><span class="value">' +
                   d.name +
                   '</span><br/>' +
-                  '<span class="name">Amount: </span><span class="value">$' +
+                  '<span class="name">Lines: </span><span class="value">' +
                   addCommas(d.value) +
                   '</span><br/>' +
-                  '<span class="name">Year: </span><span class="value">' +
-                  d.year +
+                  '<span class="name">Speaking Turns: </span><span class="value">' +
+                  d.speakingturns +
+                  '</span><br/>' +
+                  '<span class="name">Gender: </span><span class="value">' +
+                  d.gender +
                   '</span>';
 
     tooltip.showTooltip(content, d3.event);
@@ -292,7 +304,7 @@ function bubbleChart() {
   function hideDetail(d) {
     // reset outline
     d3.select(this)
-      .attr('stroke', d3.rgb(fillColor(d.group)).darker());
+      .attr('stroke', d3.rgb(fillColor(d.gender)).darker()); //lowercase?
 
     tooltip.hideTooltip();
   }
@@ -303,6 +315,7 @@ function bubbleChart() {
    * between "single group" and "split by year" modes.
    *
    * displayName is expected to be a string and either 'year' or 'all'.
+   * 'year' is set on "Split" and 'all' is for "All" to make title appear
    */
   chart.toggleDisplay = function (displayName) {
     if (displayName === 'year') {
@@ -378,7 +391,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/gates_money.csv', display);
+d3.csv('data/CivilWar.csv', display);
 
 // setup the buttons.
 setupButtons();
