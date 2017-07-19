@@ -1,3 +1,4 @@
+
 /* bubbleChart creation function. Returns a function that will
  * instantiate a new bubble chart given a DOM element to display
  * it in and a dataset to visualize.
@@ -131,7 +132,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
       .domain([0, maxAmount]);
 
     /*
-
     // Use map() to convert raw data into node data.
     // Checkout http://learnjsdata.com/ for more on
     // working with data.
@@ -148,7 +148,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         y: Math.random() * 800
       };
     });
-
     */
 
     var myNodes = rawData.map(function (d) {
@@ -231,25 +230,18 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 
 
     /*
-
-
     /*
   var nodeEnter = node.enter().append("g")
       .attr("class", "node")
       .on("click", click)
       .call(force.drag);
-
   nodeEnter.append("circle")
       .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-
   nodeEnter.append("text")
       .attr("dy", ".35em")
       .text(function(d) { return d.name; });
-
   node.select("circle")
       .style("fill", color);
-
-
 */
 
 
@@ -258,18 +250,15 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     var node = svg.selectAll("circle")
     .data(nodes)
     .enter().append("g");
-
     node.append("circle")
         .style("fill", function (d) { return color(d.cluster); })
         .attr("r", function(d){return d.radius})
-
     node.append("text")
     .text(function (d) { return d.name; })
     .attr("dx", -10)
     .attr("dy", ".35em")
     .text(function (d) { return d.name; })
     .style("stroke", "gray");
-
     function tick(e) {
     node.each(cluster(10 * e.alpha * e.alpha))
         .each(collide(.5))
@@ -278,7 +267,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         var k = "translate(" + d.x + "," + d.y + ")";
         return k;
     })
-
     */
 
     // @v4 Merge the original empty selection and the enter selection
@@ -313,7 +301,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 
 /*
   var group = d3.select("circle").append(function() { return bubbles});
-
   group.append("text")
         .enter()
         .text(function (d) { return d.name; })
@@ -321,7 +308,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         .attr("dy", function (d) {return d.y; })
         .text(function (d) { return d.name; })
         .style("stroke", "black");
-
   };
   */
 
@@ -332,18 +318,13 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
       .attr("class", "node")
       .on("click", click)
       .call(force.drag);
-
   nodeEnter.append("circle")
       .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-
   nodeEnter.append("text")
       .attr("dy", ".35em")
       .text(function(d) { return d.name; });
-
   node.select("circle")
       .style("fill", color);
-
-
 */
 
 
@@ -479,7 +460,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     d3.select(this).attr('stroke', 'black');
 
     /*
-
     var content = '<span class="name">Name: </span><span class="value">' +
                   d.name +
                   '</span><br/>' +
@@ -492,7 +472,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
                   '<span class="name">Gender: </span><span class="value">' +
                   d.gender +
                   '</span>';
-
                   */
     var content = '<span class="name"> Name: </span><span class="value">' +
                   d.name +
