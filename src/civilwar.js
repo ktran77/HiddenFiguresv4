@@ -88,22 +88,12 @@ function bubbleChart() {
 
   // Nice looking colors - no reason to buck the trend
   // @v4 scales now have a flattened naming scheme
+  var fillColor = d3.scaleOrdinal()
+    //.domain(['low', 'medium', 'high'])
+    .domain(['male', 'female'])
+    //.range(['#d84b2a', '#beccae', '#7aa25c']);
+    .range(['#d84b2a', '#beccae']);
 
-
-var movieNamesDomain=[];
-
-d3.csv("data/AllMoviesSummary.csv", function(csv){
-            csv.map(function(d){
-                movieNamesDomain.push(d.movie);
-            })
-            //called after the AJAX is success
-            console.log("Array of movie names",movieNamesDomain);
-            console.log("field1", movieNamesDomain[0]);
-        });
-
-
-  var fillColor = d3.scaleOrdinal(d3.schemeCategory10)
-    .domain(movieNamesDomain);
   /*
    * This data manipulation function takes the raw data from
    * the CSV file and converts it into an array of node objects.
@@ -151,10 +141,13 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 
     var myNodes = rawData.map(function (d) {
       return {
-        id: d.movie,
-        radius: radiusScale(+d.radius),
-        value: +d.percentage_female_line,
-        name: d.movie,
+        id: d.id,
+        radius: radiusScale(+d.radius), //d.total_amount
+        value: +d.Total_Words, //total_amount
+        name: d.Character, //grnat_title
+        org: d.organization,
+        gender: d.Gender, //group: d.group
+        peakingturns: d.speaking_turns, //year: d. start_year
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -199,90 +192,23 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // Initially, their radius (r attribute) will be 0.
     // @v4 Selections are immutable, so lets capture the
     //  enter selection to apply our transtition to below.
-    var bubblesEnter = bubbles.enter().append("g").attr("class", "node");
-
-
-    var bubblesE = bubblesEnter.append('circle')
-        .classed('bubble', true)
-        .attr('r', 0)
-        .attr('fill', function (d) { return fillColor(d.name); })
-        .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); })
-        .attr('stroke-width', 2)
-        .on('mouseover', showDetail)
-        .on('mouseout', hideDetail);
-
-    bubblesEnter.append("text").enter()
-      .attr("dy", ".35em")
-      .text(function(d) {
-        console.log(d);
-        return d.name;
-    });
-
-
-    /*
-
-
-    /*
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .on("click", click)
-      .call(force.drag);
-
-  nodeEnter.append("circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-
-  nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
-
-  node.select("circle")
-      .style("fill", color);
-
-
-*/
-
-
-
-/*
-    var node = svg.selectAll("circle")
-    .data(nodes)
-    .enter().append("g");
-
-    node.append("circle")
-        .style("fill", function (d) { return color(d.cluster); })
-        .attr("r", function(d){return d.radius})
-
-    node.append("text")
-    .text(function (d) { return d.name; })
-    .attr("dx", -10)
-    .attr("dy", ".35em")
-    .text(function (d) { return d.name; })
-    .style("stroke", "gray");
-
-    function tick(e) {
-    node.each(cluster(10 * e.alpha * e.alpha))
-        .each(collide(.5))
-    //.attr("transform", functon(d) {});
-    .attr("transform", function (d) {
-        var k = "translate(" + d.x + "," + d.y + ")";
-        return k;
-    })
-
-    */
+    var bubblesE = bubbles.enter().append('circle')
+      .classed('bubble', true)
+      .attr('r', 0)
+      .attr('fill', function (d) { return fillColor(d.gender); }) //lowercase?
+      .attr('stroke', function (d) { return d3.rgb(fillColor(d.gender)).darker(); }) //lowercase?
+      .attr('stroke-width', 2)
+      .on('mouseover', showDetail)
+      .on('mouseout', hideDetail);
 
     // @v4 Merge the original empty selection and the enter selection
     bubbles = bubbles.merge(bubblesE);
-
-
-
 
     // Fancy transition to make bubbles appear, ending with the
     // correct radius
     bubbles.transition()
       .duration(2000)
       .attr('r', function (d) { return d.radius; });
-
-
 
     // Set the simulation's nodes to our newly created nodes array.
     // @v4 Once we set the nodes, the simulation will start running automatically!
@@ -291,52 +217,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // Set initial layout to single group.
     groupBubbles();
 
-}
-
-
-
-
-
-
-
-
-/*
-  var group = d3.select("circle").append(function() { return bubbles});
-
-  group.append("text")
-        .enter()
-        .text(function (d) { return d.name; })
-        .attr("dx", function(d) { return d.x; })
-        .attr("dy", function (d) {return d.y; })
-        .text(function (d) { return d.name; })
-        .style("stroke", "black");
-
   };
-  */
-
-
-
-/*
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .on("click", click)
-      .call(force.drag);
-
-  nodeEnter.append("circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-
-  nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
-
-  node.select("circle")
-      .style("fill", color);
-
-
-*/
-
-
-
 
   /*
    * Callback function that is called after every tick of the
@@ -463,7 +344,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // change outline to indicate hover state.
     d3.select(this).attr('stroke', 'black');
 
-    /*
+
 
     var content = '<span class="name">Name: </span><span class="value">' +
                   d.name +
@@ -478,7 +359,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
                   d.gender +
                   '</span>';
 
-                  */
+
     var content = '<span class="name"> Name: </span><span class="value">' +
                   d.name +
                   '</span><br/>';
@@ -579,7 +460,7 @@ function addCommas(nStr) {
 }
 
 // Load the data.
-d3.csv('data/AllMoviesSummary.csv', display);
+d3.csv('data/CivilWar.csv', display);
 
 // setup the buttons.
 setupButtons();
