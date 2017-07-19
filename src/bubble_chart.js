@@ -199,20 +199,51 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // Initially, their radius (r attribute) will be 0.
     // @v4 Selections are immutable, so lets capture the
     //  enter selection to apply our transtition to below.
-    var bubblesE = bubbles.enter().append('circle')
-      .classed('bubble', true)
-      .attr('r', 0)
-      .attr('fill', function (d) { return fillColor(d.name); })
-      .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); })
-      .attr('stroke-width', 2)
-      .on('mouseover', showDetail)
-      .on('mouseout', hideDetail);
+    var bubblesEnter = bubbles.enter().append("g").attr("class", "node");
+
+
+    var bubblesE = bubblesEnter.append('circle')
+        .classed('bubble', true)
+        .attr('r', 0)
+        .attr('fill', function (d) { return fillColor(d.name); })
+        .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); })
+        .attr('stroke-width', 2)
+        .on('mouseover', showDetail)
+        .on('mouseout', hideDetail);
+
+    bubblesEnter.append("text").enter()
+      .attr("dy", ".35em")
+      .text(function(d) {
+        console.log(d);
+        return d.name;
+    });
 
 
     /*
 
 
+    /*
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .on("click", click)
+      .call(force.drag);
 
+  nodeEnter.append("circle")
+      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
+
+  nodeEnter.append("text")
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
+  node.select("circle")
+      .style("fill", color);
+
+
+*/
+
+
+
+/*
     var node = svg.selectAll("circle")
     .data(nodes)
     .enter().append("g");
@@ -236,10 +267,8 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         var k = "translate(" + d.x + "," + d.y + ")";
         return k;
     })
-}
-*/
 
-
+    */
 
     // @v4 Merge the original empty selection and the enter selection
     bubbles = bubbles.merge(bubblesE);
@@ -262,7 +291,20 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // Set initial layout to single group.
     groupBubbles();
 
-    bubbles.append("text")
+}
+
+
+
+
+
+
+
+
+/*
+  var group = d3.select("circle").append(function() { return bubbles});
+
+  group.append("text")
+        .enter()
         .text(function (d) { return d.name; })
         .attr("dx", function(d) { return d.x; })
         .attr("dy", function (d) {return d.y; })
@@ -270,6 +312,31 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         .style("stroke", "black");
 
   };
+  */
+
+
+
+/*
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .on("click", click)
+      .call(force.drag);
+
+  nodeEnter.append("circle")
+      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
+
+  nodeEnter.append("text")
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
+  node.select("circle")
+      .style("fill", color);
+
+
+*/
+
+
+
 
   /*
    * Callback function that is called after every tick of the
