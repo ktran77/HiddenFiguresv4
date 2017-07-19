@@ -88,12 +88,22 @@ function bubbleChart() {
 
   // Nice looking colors - no reason to buck the trend
   // @v4 scales now have a flattened naming scheme
-  var fillColor = d3.scaleOrdinal()
-    //.domain(['low', 'medium', 'high'])
-    .domain(['Rouge One', 'Civil War'])
-    //.range(['#d84b2a', '#beccae', '#7aa25c']);
-    .range(['#d84b2a', '#beccae']);
 
+
+var movieNamesDomain=[];
+
+d3.csv("data/AllMoviesSummary.csv", function(csv){
+            csv.map(function(d){
+                movieNamesDomain.push(d.movie);
+            })
+            //called after the AJAX is success
+            console.log("Array of movie names",movieNamesDomain);
+            console.log("field1", movieNamesDomain[0]);
+        });
+
+
+  var fillColor = d3.scaleOrdinal(d3.schemeCategory10)
+    .domain(movieNamesDomain);
   /*
    * This data manipulation function takes the raw data from
    * the CSV file and converts it into an array of node objects.
@@ -142,12 +152,9 @@ function bubbleChart() {
     var myNodes = rawData.map(function (d) {
       return {
         id: d.movie,
-        radius: radiusScale(+d.radius), //d.total_amount
-        value: +d.percentage_female_line, //total_amount
-        name: d.movie, //grnat_title
-        //org: d.organization,
-        //gender: d.Gender, //group: d.group
-        //speakingturns: d.speaking_turns, //year: d. start_year
+        radius: radiusScale(+d.radius),
+        value: +d.percentage_female_line,
+        name: d.movie,
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -195,16 +202,50 @@ function bubbleChart() {
     var bubblesE = bubbles.enter().append('circle')
       .classed('bubble', true)
       .attr('r', 0)
-      .attr('fill', function (d) { return fillColor(d.name); }) //lowercase?
-      //.attr('fill', function (d) { return fillColor(d.gender); }) //lowercase?
-      .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); }) //lowercase?
-      //.attr('stroke', function (d) { return d3.rgb(fillColor(d.gender)).darker(); }) //lowercase?
+      .attr('fill', function (d) { return fillColor(d.name); })
+      .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); })
       .attr('stroke-width', 2)
       .on('mouseover', showDetail)
       .on('mouseout', hideDetail);
 
+
+    /*
+
+
+
+    var node = svg.selectAll("circle")
+    .data(nodes)
+    .enter().append("g");
+
+    node.append("circle")
+        .style("fill", function (d) { return color(d.cluster); })
+        .attr("r", function(d){return d.radius})
+
+    node.append("text")
+    .text(function (d) { return d.name; })
+    .attr("dx", -10)
+    .attr("dy", ".35em")
+    .text(function (d) { return d.name; })
+    .style("stroke", "gray");
+
+    function tick(e) {
+    node.each(cluster(10 * e.alpha * e.alpha))
+        .each(collide(.5))
+    //.attr("transform", functon(d) {});
+    .attr("transform", function (d) {
+        var k = "translate(" + d.x + "," + d.y + ")";
+        return k;
+    })
+}
+*/
+
+
+
     // @v4 Merge the original empty selection and the enter selection
     bubbles = bubbles.merge(bubblesE);
+
+
+
 
     // Fancy transition to make bubbles appear, ending with the
     // correct radius
@@ -212,12 +253,21 @@ function bubbleChart() {
       .duration(2000)
       .attr('r', function (d) { return d.radius; });
 
+
+
     // Set the simulation's nodes to our newly created nodes array.
     // @v4 Once we set the nodes, the simulation will start running automatically!
     simulation.nodes(nodes);
 
     // Set initial layout to single group.
     groupBubbles();
+
+    bubbles.append("text")
+        .text(function (d) { return d.name; })
+        .attr("dx", function(d) { return d.x; })
+        .attr("dy", function (d) {return d.y; })
+        .text(function (d) { return d.name; })
+        .style("stroke", "black");
 
   };
 
