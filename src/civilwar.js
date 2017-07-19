@@ -10,10 +10,6 @@ function bubbleChart() {
   // Constants for sizing
   var width = 1000;
   var height = 600;
-  var
-    padding = 3, // separation between same-color circles
-    clusterPadding = 9, // separation between different-color circles
-    maxRadius = 12;
 
   // tooltip for mouseover functionality
   var tooltip = floatingTooltip('gates_tooltip', 240);
@@ -66,7 +62,7 @@ function bubbleChart() {
   // @v4 Before the charge was a stand-alone attribute
   //  of the force layout. Now we can use it as a separate force!
   function charge(d) {
-    return -Math.pow(d.radius, 2.0) * forceStrength * 1.5;
+    return -Math.pow(d.radius, 2.0) * forceStrength;
   }
 
   // Here we create a force layout and
@@ -82,9 +78,6 @@ function bubbleChart() {
   // @v4 Force starts up automatically,
   //  which we don't want as there aren't any nodes yet.
   simulation.stop();
-
-
-
 
   // Nice looking colors - no reason to buck the trend
   // @v4 scales now have a flattened naming scheme
@@ -118,8 +111,6 @@ function bubbleChart() {
       .range([0.1, 80])
       .domain([0, maxAmount]);
 
-    /*
-
     // Use map() to convert raw data into node data.
     // Checkout http://learnjsdata.com/ for more on
     // working with data.
@@ -132,22 +123,6 @@ function bubbleChart() {
         //org: d.organization,
         gender: d.Gender, //group: d.group
         speakingturns: d.speaking_turns, //year: d. start_year
-        x: Math.random() * 900,
-        y: Math.random() * 800
-      };
-    });
-
-    */
-
-    var myNodes = rawData.map(function (d) {
-      return {
-        id: d.id,
-        radius: radiusScale(+d.radius), //d.total_amount
-        value: +d.Total_Words, //total_amount
-        name: d.Character, //grnat_title
-        org: d.organization,
-        gender: d.Gender, //group: d.group
-        peakingturns: d.speaking_turns, //year: d. start_year
         x: Math.random() * 900,
         y: Math.random() * 800
       };
@@ -216,7 +191,6 @@ function bubbleChart() {
 
     // Set initial layout to single group.
     groupBubbles();
-
   };
 
   /*
@@ -226,47 +200,11 @@ function bubbleChart() {
    * based on the current x and y values of their bound node data.
    * These x and y values are modified by the force simulation.
    */
-
-
   function ticked() {
     bubbles
-      .each (collide(.5))
       .attr('cx', function (d) { return d.x; })
       .attr('cy', function (d) { return d.y; });
   }
-
-
-
-  function collide(alpha) {
-  var quadtree = d3.quadtree(nodes);
-  return function(d) {
-    var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
-        nx1 = d.x - r,
-        nx2 = d.x + r,
-        ny1 = d.y - r,
-        ny2 = d.y + r;
-    quadtree.visit(function(quad, x1, y1, x2, y2) {
-      if (quad.point && (quad.point !== d)) {
-        var x = d.x - quad.point.x,
-            y = d.y - quad.point.y,
-            l = Math.sqrt(x * x + y * y),
-            r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
-        if (l < r) {
-          l = (l - r) / l * alpha;
-          d.x -= x *= l;
-          d.y -= y *= l;
-          quad.point.x += x;
-          quad.point.y += y;
-        }
-      }
-      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-    });
-  };
-}
-
-
-
-
 
   /*
    * Provides a x value for each node to be used with the split by year
@@ -344,8 +282,6 @@ function bubbleChart() {
     // change outline to indicate hover state.
     d3.select(this).attr('stroke', 'black');
 
-
-
     var content = '<span class="name">Name: </span><span class="value">' +
                   d.name +
                   '</span><br/>' +
@@ -358,11 +294,6 @@ function bubbleChart() {
                   '<span class="name">Gender: </span><span class="value">' +
                   d.gender +
                   '</span>';
-
-
-    var content = '<span class="name"> Name: </span><span class="value">' +
-                  d.name +
-                  '</span><br/>';
 
     tooltip.showTooltip(content, d3.event);
   }
