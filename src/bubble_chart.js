@@ -225,50 +225,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         .style("stroke", "black");
 
 
-
-
-
-
-    /*
-    /*
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .on("click", click)
-      .call(force.drag);
-  nodeEnter.append("circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-  nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
-  node.select("circle")
-      .style("fill", color);
-*/
-
-
-
-/*
-    var node = svg.selectAll("circle")
-    .data(nodes)
-    .enter().append("g");
-    node.append("circle")
-        .style("fill", function (d) { return color(d.cluster); })
-        .attr("r", function(d){return d.radius})
-    node.append("text")
-    .text(function (d) { return d.name; })
-    .attr("dx", -10)
-    .attr("dy", ".35em")
-    .text(function (d) { return d.name; })
-    .style("stroke", "gray");
-    function tick(e) {
-    node.each(cluster(10 * e.alpha * e.alpha))
-        .each(collide(.5))
-    //.attr("transform", functon(d) {});
-    .attr("transform", function (d) {
-        var k = "translate(" + d.x + "," + d.y + ")";
-        return k;
-    })
-    */
-
     // @v4 Merge the original empty selection and the enter selection
     bubbles = bubbles.merge(bubblesE);
 
@@ -299,46 +255,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 
 
 
-/*
-  var group = d3.select("circle").append(function() { return bubbles});
-  group.append("text")
-        .enter()
-        .text(function (d) { return d.name; })
-        .attr("dx", function(d) { return d.x; })
-        .attr("dy", function (d) {return d.y; })
-        .text(function (d) { return d.name; })
-        .style("stroke", "black");
-  };
-  */
-
-
-
-/*
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .on("click", click)
-      .call(force.drag);
-  nodeEnter.append("circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
-  nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
-  node.select("circle")
-      .style("fill", color);
-*/
-
-
-  /*
-   * Callback function that is called after every tick of the
-   * force simulation.
-   * Here we do the acutal repositioning of the SVG circles
-   * based on the current x and y values of their bound node data.
-   * These x and y values are modified by the force simulation.
-   */
-
-
   function ticked() {
-
 
     bubbles
       .each (collide(.5))
