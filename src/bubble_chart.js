@@ -51,6 +51,8 @@ function bubbleChart() {
   var bubbles = null;
   var nodes = [];
 
+  var textLabel = null;
+
   // Charge function that is called for each node.
   // As part of the ManyBody force.
   // This is what creates the repulsion between nodes.
@@ -202,21 +204,30 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     var bubblesEnter = bubbles.enter().append("g").attr("class", "node");
 
 
+
+
     var bubblesE = bubblesEnter.append('circle')
         .classed('bubble', true)
-        .attr('r', 0)
+        .attr('r', function (d) { return d.radius})
         .attr('fill', function (d) { return fillColor(d.name); })
         .attr('stroke', function (d) { return d3.rgb(fillColor(d.name)).darker(); })
         .attr('stroke-width', 2)
         .on('mouseover', showDetail)
         .on('mouseout', hideDetail);
 
-    bubblesEnter.append("text").enter()
-      .attr("dy", ".35em")
-      .text(function(d) {
-        console.log(d);
-        return d.name;
-    });
+    textLabel = bubblesEnter.append("text")
+        .attr("dx", 0)
+        .attr("dy", 0)
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            console.log(d.name);
+            return d.name;
+        })
+        .style("stroke", "black");
+
+
+
+
 
 
     /*
@@ -336,8 +347,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 */
 
 
-
-
   /*
    * Callback function that is called after every tick of the
    * force simulation.
@@ -348,10 +357,16 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 
 
   function ticked() {
+
+
     bubbles
       .each (collide(.5))
       .attr('cx', function (d) { return d.x; })
       .attr('cy', function (d) { return d.y; });
+
+    textLabel.attr("dx", function (d) {return d.x;}).attr("dy", function(d) {
+        return d.y;
+    });
   }
 
 
