@@ -1,51 +1,1 @@
-"","Character","Gender","speaking_turns","Total_Words"
-"1","Bailey","male",66,510
-"2","Bill","male",2,32
-"3","Bloat","male",1,2
-"4","Carol","female",2,19
-"5","Charlie","male",58,377
-"6","Crush","male",7,64
-"7","Deb","female",1,5
-"8","Destiny","female",84,497
-"9","Dory","female",399,4210
-"10","Female Aquarist","female",3,19
-"11","Female Aquarist 2","female",1,11
-"12","Female Blue Tang","female",4,29
-"13","Female Blue Tang 2","female",1,4
-"14","Female Crab","female",7,69
-"15","Female Driver","female",5,30
-"16","Female Educator","female",2,35
-"17","Female Fish","female",2,14
-"18","Female Fish 2","female",1,5
-"19","Female Otter Trainer","female",2,17
-"20","Female Worker","female",2,12
-"21","Female Yellow Fish","female",1,4
-"22","Fluke","male",34,262
-"23","Gerald","male",3,3
-"24","Giant Clam","male",6,95
-"25","Gil","male",4,36
-"26","Gurgle","male",1,6
-"27","Hank","male",119,1131
-"28","Jacques","male",1,1
-"29","Jenny","female",55,410
-"30","Kathy","female",5,31
-"31","Male Aquarist","male",1,4
-"32","Male Aquarist 2","male",2,10
-"33","Male Blue Tang","male",1,8
-"34","Male Blue Tang 2","male",2,28
-"35","Male Worker","male",2,21
-"36","Male Yellow Fish","male",1,3
-"37","Male Yellow Fish 2","male",1,1
-"38","Marlin","male",162,1612
-"39","Mr. Ray","male",23,211
-"40","Nemo","male",72,388
-"41","Peach","male",1,4
-"42","Rudder","male",25,123
-"43","Sea Cucumber","male",3,3
-"44","Sea Cucumber 2","male",1,4
-"45","Sick Fish","male",2,6
-"46","Sigourney Weaver","female",13,124
-"47","Squirt","male",2,15
-"48","Stan","male",18,82
-"49","Wife Fish","female",19,108
-"50","Woman 1","female",1,14
+,Character,Gender,speaking_turns,Total_Words,radius1,Bailey,male,66,510,22.583179582,Bill,male,2,32,5.6568542493,Bloat,male,1,2,1.4142135624,Carol,female,2,19,4.3588989445,Charlie,male,58,377,19.416487846,Crush,male,7,64,87,Deb,female,1,5,2.2360679778,Destiny,female,84,497,22.293496819,Dory,female,399,4210,64.8845127910,Female Aquarist,female,3,19,4.35889894411,Female Aquarist 2,female,1,11,3.3166247912,Female Blue Tang,female,4,29,5.38516480713,Female Blue Tang 2,female,1,4,214,Female Crab,female,7,69,8.30662386315,Female Driver,female,5,30,5.47722557516,Female Educator,female,2,35,5.91607978317,Female Fish,female,2,14,3.74165738718,Female Fish 2,female,1,5,2.23606797719,Female Otter Trainer,female,2,17,4.12310562620,Female Worker,female,2,12,3.46410161521,Female Yellow Fish,female,1,4,222,Fluke,male,34,262,16.1864140623,Gerald,male,3,3,1.73205080824,Giant Clam,male,6,95,9.74679434525,Gil,male,4,36,626,Gurgle,male,1,6,2.44948974327,Hank,male,119,1131,33.6303434428,Jacques,male,1,1,129,Jenny,female,55,410,20.2484567330,Kathy,female,5,31,5.56776436331,Male Aquarist,male,1,4,232,Male Aquarist 2,male,2,10,3.1622776633,Male Blue Tang,male,1,8,2.82842712534,Male Blue Tang 2,male,2,28,5.29150262235,Male Worker,male,2,21,4.58257569536,Male Yellow Fish,male,1,3,1.73205080837,Male Yellow Fish 2,male,1,1,138,Marlin,male,162,1612,40.149719839,Mr. Ray,male,23,211,14.5258390540,Nemo,male,72,388,19.697715641,Peach,male,1,4,242,Rudder,male,25,123,11.0905365143,Sea Cucumber,male,3,3,1.73205080844,Sea Cucumber 2,male,1,4,245,Sick Fish,male,2,6,2.44948974346,Sigourney Weaver,female,13,124,11.1355287347,Squirt,male,2,15,3.87298334648,Stan,male,18,82,9.05538513849,Wife Fish,female,19,108,10.3923048550,Woman 1,female,1,14,3.741657387
