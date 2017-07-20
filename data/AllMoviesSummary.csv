@@ -1,1 +1,11 @@
-﻿movie,num_female_char,total_char,percentage female_char,total_female_lines,total_lines,percentage_female_line,radiusRogue One,10,106,9.439,1345,8063,16.681,16.681Civil War,13,47,27.66,1656,10083,16.423,16.423
+movie,num_female_char,total_char,percentage female_char,total_female_lines,total_lines,percentage_female_line,radius
+Rogue One,10,106,9.439,1345,8063,16.681,16.681
+Civil War,13,47,27.66,1656,10083,16.423,16.423
+BatmanVSuperman,20,82,24.39,1583,7004,22.601,22.601
+Deadpool,10,34,29.412,771,8146,9.465,9.465
+Fantastic Beasts,16,49,32.653,2068,6462,32.002,32.002
+Finding Dory,21,50,42,5667,10709,52.918,52.918
+Jungle book,6,28,21.429,591,5972,9.896,9.896
+Secret Life of Pets,13,48,27.083,1178,6177,19.071,19.071
+Suicide Squad,14,65,21.538,2427,7561,32.099,32.099
+Zootopia,25,67,37.313,4524,9861,45.878,45.878
