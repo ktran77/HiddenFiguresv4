@@ -265,9 +265,17 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 /*
 function linkTopic(a) {
    a.on("click", click); }
+<<<<<<< HEAD
 function click(d) {
         location.href = 'http://www.facebook.com';
     }
+=======
+
+function click(d) {
+        location.href = 'http://www.facebook.com';
+    }
+
+>>>>>>> 4954155ff30b5c254dbfd63f6554909c7173c9cb
   */
 
 
