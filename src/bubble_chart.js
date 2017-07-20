@@ -99,7 +99,6 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
             csv.map(function(d){
                 movieNamesDomain.push(d.movie);
             })
-            //called after the AJAX is success
             console.log("Array of movie names",movieNamesDomain);
             console.log("field1", movieNamesDomain[0]);
         });
@@ -200,7 +199,21 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
     // Initially, their radius (r attribute) will be 0.
     // @v4 Selections are immutable, so lets capture the
     //  enter selection to apply our transtition to below.
-    var bubblesEnter = bubbles.enter().append("g").attr("class", "node");
+    var bubblesEnter = bubbles.enter()
+        .append("g")
+        .attr("class", "g-node")
+        .attr("xlink:href", function(d) {
+          var strName = d.name;
+          console.log("name is " + d.name);
+          strName = strName.replace(/\s/g, '');
+            return (strName + ".html");
+        })
+        .on("click", function (d) {
+          console.log("name is " + d.name);
+          var strName = d.name;
+          strName = strName.replace(/\s/g, '');
+          location.replace(strName +'.html');
+        });
 
 
 
@@ -213,6 +226,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         .attr('stroke-width', 2)
         .on('mouseover', showDetail)
         .on('mouseout', hideDetail);
+
 
     textLabel = bubblesEnter.append("text")
         .attr("dx", 0)
@@ -249,7 +263,15 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
 }
 
 
+/*
+function linkTopic(a) {
+   a.on("click", click); }
 
+function click(d) {
+        location.href = 'http://www.facebook.com';
+    }
+
+  */
 
 
 
@@ -374,6 +396,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
    */
   function showDetail(d) {
     // change outline to indicate hover state.
+    d3.select(this).style("cursor", "pointer");
     d3.select(this).attr('stroke', 'black');
 
     /*
@@ -401,9 +424,10 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
    * Hides tooltip
    */
   function hideDetail(d) {
+
+    d3.select(this).style("cursor", "default");
     // reset outline
-    d3.select(this)
-      .attr('stroke', d3.rgb(fillColor(d.gender)).darker()); //lowercase?
+    d3.select(this).attr('stroke', d3.rgb(fillColor(d.gender)).darker()); //lowercase?
 
     tooltip.hideTooltip();
   }
