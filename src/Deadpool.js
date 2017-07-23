@@ -260,6 +260,10 @@ function bubbleChart() {
       .text(function (d) { return d; });
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 
   /*
    * Function called on mouseover to display the
