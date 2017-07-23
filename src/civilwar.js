@@ -85,7 +85,7 @@ function bubbleChart() {
     //.domain(['low', 'medium', 'high'])
     .domain(['male', 'female'])
     //.range(['#d84b2a', '#beccae', '#7aa25c']);
-    .range(['#d84b2a', '#beccae']);
+    .range(['#7ab9f2', '#FFB6C1']);
 
   /*
    * This data manipulation function takes the raw data from
