@@ -234,8 +234,8 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
         .text(function(d) {
             console.log(d.name);
             return d.name;
-        })
-        .style("stroke", "black");
+        });
+        // .style("stroke", "black");
 
 
     // @v4 Merge the original empty selection and the enter selection
