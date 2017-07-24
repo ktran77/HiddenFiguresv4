@@ -417,9 +417,12 @@ function click(d) {
                   d.gender +
                   '</span>';
                   */
-    var content = '<span class="name"> Name: </span><span class="value">' +
+    var content = '<span class="name"> Name: </span><span class="name">' +
                   d.name +
-                  '</span><br/>';
+                  '</span><br/>'+
+                  '<span class="name"> % Female Lines: </span><span class="value">' +
+                  addCommas(d.value)+"%" +
+                  '</span>';
 
     tooltip.showTooltip(content, d3.event);
   }
