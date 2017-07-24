@@ -98,8 +98,7 @@ d3.csv("data/AllMoviesSummary.csv", function(csv){
             csv.map(function(d){
                 movieNamesDomain.push(d.movie);
             })
-            console.log("Array of movie names",movieNamesDomain);
-            console.log("field1", movieNamesDomain[0]);
+
         });
 
 

@@ -40,6 +40,8 @@
     <div id="barchart">
         <!DOCTYPE html>
         <meta charset="utf-8">
+        <script src="http://d3js.org/d3.v4.min.js"></script>
+        <script src="src/tooltip.js"></script>
         <style>
 
         body {
@@ -61,9 +63,6 @@
           fill: #FFA07A ;
         }
 
-        .x.axis path {
-          display: none;
-        }
 
         .d3-tip {
           line-height: 1;
@@ -94,110 +93,131 @@
           left: 0;
         }
         </style>
+
+
         <body>
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
         <script>
 
-        var margin = {top: 40, right: 20, bottom: 30, left: 40},
-            width = 960 - margin.left - margin.right,
+        var margin = {top: 50, right: 20, bottom: 30, left: 40},
+            width = 1000 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
-        var formatPercent = d3.format("%")
-        var x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+// set the ranges
+var x = d3.scaleBand()
+          .range([0, width])
+          .padding(0.1);
+var y = d3.scaleLinear()
+          .range([height, 0]);
 
-        var y = d3.scale.linear()
-            .range([height, 0]);
+var tooltip = floatingTooltip('gates_tooltip', 240);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left")
-            .tickFormat(formatPercent);
+// append the svg object to the body of the page
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom + 10)
+  .append("g")
+    .attr("transform",
+          "translate(" + (margin.left + 40) + "," + margin.top + ")");
 
-        var tip = d3.tip()
-          .attr('class', 'd3-tip')
-          .offset([-10, 0])
-          .html(function(d) {
-            return "<strong>% of Female Lines:</strong> <span style='color:#ffffff'>" + d.radius*100 + "%" + "</span>";
-          })
+svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "white");
+// get the data
+d3.csv("data/AllMoviesSummary.csv", function(error, data) {
 
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  // format the data
 
-        svg.call(tip);
+  data.forEach(function(d) {
+    d.radius = +d.radius;
+  });
 
-        d3.csv("data/AllMoviesSummary2.csv", type, function(error, data) {
-          x.domain(data.map(function(d) { return d.movie; }));
-          y.domain([0, d3.max(data, function(d) { return d.radius; })]);
+  // Scale the range of the data in the domains
+  x.domain(data.map(function(d) { return d.movie; }));
+  y.domain([0, d3.max(data, function(d) { return d.radius; })]);
 
-          svg.append("g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis);
-
-          svg.append("g")
-              .attr("class", "y axis")
-              .call(yAxis)
-            .append("text")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("% of Female Lines");
-
-          svg.selectAll(".bar")
-              .data(data)
-            .enter().append("rect")
-              .attr("class", "bar")
-              .attr("x", function(d) { return x(d.movie); })
-              .attr("width", x.rangeBand())
-              .attr("y", function(d) { return y(d.radius); })
-              .attr("height", function(d) { return height - y(d.radius); })
-              .on('mouseover', tip.show)
-              .on('mouseout', tip.hide)
-              .attr("xlink:href", function(d) {
+  // append the rectangles for the bar chart
+  svg.selectAll(".bar")
+      .data(data)
+      .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.movie); })
+      .attr("width", x.bandwidth())
+      .attr("y", function(d) { return y(d.radius); })
+      .attr("height", function(d) { return height - y(d.radius); })
+      .attr("xlink:href", function(d) {
                 var strName = d.movie;
                 console.log("name is " + d.movie);
                 strName = strName.replace(/\s/g, '');
                   return (strName + ".html");
               })
-              .on("click", function (d) {
+      .on("click", function (d) {
                 console.log("name is " + d.movie);
                 var strName = d.movie;
                 strName = strName.replace(/\s/g, '');
                 location.replace(strName +'.html');
               })
-              .on({
-      "mouseover": function(d) {
-        d3.select(this).style("cursor", "pointer"); /*semicolon here*/
-      },
-      "mouseout": function(d) {
-        d3.select(this).style("cursor", "default"); /*and there*/
-      }
-    });
-              //;
+      .on("mouseover", function(d) {
+          d3.select(this).style("cursor", "pointer");
+          var content = '<span class="Value"> % Female Words: </span><span class="value">' +
+                  d.radius + "%"
+                  '</span><br/>';
 
-        });
+          tooltip.showTooltip(content, d3.event);
+      })
+      .on("mouseout", function(d) {
+          d3.select(this).style("cursor", "default");
+          tooltip.hideTooltip();
+           });
 
-        function type(d) {
-          d.radius = +d.radius;
-          return d;
-        }
+
+  // add the x Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  svg.append("text")
+        .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom + 5) + ")")
+        .style("text-anchor", "middle")
+        .text("Movie Name");
+
+  // add the y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("% of Female Words");
+
+function showDetail(d) {
+
+  }
+
+  /*
+   * Hides tooltip
+   */
+  function hideDetail(d) { //lowercase?
+
+
+  }
+
+});
+
 
         </script>
 
   </div>
 
-  <script src="//d3js.org/d3.v4.min.js"></script>
-  <script src="src/tooltip.js"></script>
+
+  <!--<script src="//d3js.org/d3.v4.min.js"></script>-->
   <script src="src/bubble_chart.js"></script>
 
 
